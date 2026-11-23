@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SantéMada - Créer un compte</title>
+    <link rel="stylesheet" href="acceuil.css">
+    <link rel="stylesheet" href="formulaire.css">
+</head>
+<body>
+    <header>
+        <a href="acceuil.html" class="logo">SantéMada</a>
+        <nav>
+            <a href="acceuil.html">Rechercher</a>
+            <a href="connexion.html" id="lien-connexion">Se connecter</a>
+        </nav>
+    </header>
+
+    <main>
+        <form class="carte-formulaire" id="formulaire-inscription">
+            <h1>Créer un compte</h1>
+            <p>Inscrivez-vous pour prendre rendez-vous.</p>
+
+            <label for="nom">Nom complet</label>
+            <input type="text" id="nom" placeholder="Rakoto Jean">
+
+            <label for="identifiant">Téléphone ou e-mail</label>
+            <input type="text" id="identifiant" placeholder="034 00 000 00">
+
+            <label for="mdp">Mot de passe</label>
+            <input type="password" id="mdp">
+            <p class="aide">6 caractères minimum.</p>
+
+            <label for="mdp2">Confirmer le mot de passe</label>
+            <input type="password" id="mdp2">
+
+            <button>Créer mon compte</button>
+
+            <p id="zone-message" class="message"></p>
+
+            <p class="bas">Déjà inscrit ? <a href="connexion.html">Se connecter</a></p>
+        </form>
+    </main>
+
+    <footer>
+        <p>© 2026 SantéMada · Madagascar</p>
+    </footer>
+
+    <script src="session.js"></script>
+    <script src="comptes.js"></script>
+    <script src="inscription.js"></script>
+</body>
+</html>

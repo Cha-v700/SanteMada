@@ -1,0 +1,156 @@
+/* ==========================================================
+   formulaire.css
+   Style des pages Connexion et Inscription.
+   À charger APRÈS acceuil.css.
+   ========================================================== */
+
+
+/* ----------------------------------------------------------
+   1. LES VARIABLES (les couleurs, écrites une seule fois)
+   ---------------------------------------------------------- */
+:root {
+  --vert: #0f6e56;
+  --vert-fonce: #094f3e;
+  --texte-doux: #5b635f;
+  --bordure: #dde3df;
+
+  --erreur: #a32d2d;
+  --erreur-fond: #fcebeb;
+  --succes: #3b6d11;
+  --succes-fond: #eaf3de;
+}
+
+
+/* ----------------------------------------------------------
+   2. LA CARTE
+   ---------------------------------------------------------- */
+.carte-formulaire {
+  background-color: white;
+  max-width: 420px;
+  margin: 40px auto;
+  padding: 32px;
+  border: 1px solid var(--bordure);
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+
+/* ----------------------------------------------------------
+   3. LE TITRE ET LA PHRASE D'INTRODUCTION
+   ---------------------------------------------------------- */
+.carte-formulaire h1 {
+  margin: 0 0 6px 0;
+  font-size: 26px;
+  color: var(--vert-fonce);
+}
+
+/* le paragraphe qui suit directement le titre */
+.carte-formulaire h1 + p {
+  margin: 0 0 8px 0;
+  font-size: 15px;
+}
+
+
+/* ----------------------------------------------------------
+   4. LES CHAMPS
+   ---------------------------------------------------------- */
+.carte-formulaire label {
+  display: block;
+  margin: 18px 0 6px 0;
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--texte-doux);
+}
+
+.carte-formulaire input {
+  width: 100%;
+  margin: 0;
+  padding: 12px;
+  background-color: white;
+}
+
+/* quand on clique dans un champ */
+.carte-formulaire input:focus {
+  outline: none;
+  border-color: var(--vert);
+  box-shadow: 0 0 0 3px rgba(15, 110, 86, 0.18);
+}
+
+/* le petit texte d'aide sous un champ */
+.aide {
+  margin: 6px 0 0 0;
+  font-size: 12px;
+}
+
+
+/* ----------------------------------------------------------
+   5. LE BOUTON
+   ---------------------------------------------------------- */
+.carte-formulaire button {
+  width: 100%;
+  margin: 24px 0 0 0;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.carte-formulaire button:active {
+  transform: translateY(1px);
+}
+
+
+/* ----------------------------------------------------------
+   6. LES MESSAGES (erreur et succès)
+   ---------------------------------------------------------- */
+.message {
+  margin-top: 16px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+/* tant que le message est vide, on le cache */
+.message:empty {
+  display: none;
+}
+
+.message.erreur {
+  background-color: var(--erreur-fond);
+  color: var(--erreur);
+}
+
+.message.succes {
+  background-color: var(--succes-fond);
+  color: var(--succes);
+}
+
+
+/* ----------------------------------------------------------
+   7. LE LIEN DU BAS (« Pas de compte ? », « Déjà inscrit ? »)
+   ---------------------------------------------------------- */
+.bas {
+  margin: 20px 0 0 0;
+  text-align: center;
+  font-size: 14px;
+}
+
+.bas a {
+  color: var(--vert);
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.bas a:hover {
+  text-decoration: underline;
+}
+
+
+/* ----------------------------------------------------------
+   8. LES PETITS ÉCRANS (téléphone)
+   ---------------------------------------------------------- */
+@media (max-width: 500px) {
+  .carte-formulaire {
+    margin: 20px 0;
+    padding: 24px 20px;
+  }
+}

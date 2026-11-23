@@ -1,0 +1,13 @@
+# Dépendances et fichiers générés
+node_modules/
+dist/
+build/
+
+# Fichiers secrets (mots de passe, clés)
+.env
+
+# Fichiers du système et de l'éditeur
+.DS_Store
+Thumbs.db
+.vscode/
+*.log
