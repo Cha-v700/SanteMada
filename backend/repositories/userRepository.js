@@ -1,13 +1,16 @@
+
 import pool from "../config/database.js";
 
-// Trouver un utilisateur par email
+// Trouver un utilisateur par email (connexion)
 export async function findByEmail(email) {
     const [rows] = await pool.query(
-        "SELECT * FROM users WHERE email = ?",
+        `SELECT id, nom, prenom, email, password, role, created_at
+         FROM users
+         WHERE email = ?`,
         [email]
     );
 
-    return rows[0];
+    return rows[0] || null;
 }
 
 // Créer un utilisateur
@@ -28,13 +31,14 @@ export async function create(data) {
     return result.insertId;
 }
 
-// Trouver un utilisateur par ID
+// Trouver un utilisateur par ID (sans mot de passe)
 export async function findById(id) {
     const [rows] = await pool.query(
         `SELECT id, nom, prenom, email, role, created_at
-         FROM users WHERE id = ?`,
+         FROM users
+         WHERE id = ?`,
         [id]
     );
 
-    return rows[0];
+    return rows[0] || null;
 }

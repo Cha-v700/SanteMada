@@ -26,5 +26,9 @@ services de santé à Madagascar.
 - [ ] React (en cours)
 - [ ] Backend et base de données
 
+## Module Profil Patient
+
+Ce module permet au patient de consulter et de gérer son profil personnel.
+
 ## Auteur
 Chateau Brillant

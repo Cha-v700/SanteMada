@@ -1,14 +1,19 @@
+
 import express from "express";
+import cors from "cors";
+
 import medecinRoutes from "./routes/medecinRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import patientRoutes from "./routes/patientRoutes.js";
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
+// Middleware
+app.use(cors());
 app.use(express.json());
 
-// Routes
+// Routes API
 app.use("/api/auth", authRoutes);
 app.use("/api/medecins", medecinRoutes);
 app.use("/api/patients", patientRoutes);
@@ -25,7 +30,7 @@ app.get("/test-auth", (req, res) => {
     res.send("Les routes du serveur fonctionnent !");
 });
 
-// Gestion des routes inexistantes
+// Route inexistante
 app.use((req, res) => {
     res.status(404).json({
         message: `Route introuvable : ${req.method} ${req.originalUrl}`
@@ -34,5 +39,5 @@ app.use((req, res) => {
 
 // Démarrage
 app.listen(PORT, () => {
-    console.log(`Serveur demarre sur http://localhost:${PORT}`);
+    console.log(`Serveur démarre sur http://localhost:${PORT}`);
 });
