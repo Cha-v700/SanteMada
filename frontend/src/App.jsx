@@ -11,6 +11,7 @@ import Inscription from "./pages/Inscription.jsx";
 import RendezVous from "./pages/RendezVous.jsx";
 import MesRendezVous from "./pages/MesRendezVous.jsx";
 import Agenda from "./pages/Agenda.jsx";
+import MonProfil from "./pages/MonProfil.jsx";
 
 function App() {
   // L'ÉTAT central : qui est connecté ? (null = personne)
@@ -36,6 +37,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Accueil />} />
           <Route path="/connexion" element={<Connexion onConnexion={seConnecter} />} />
+          <Route path="/mon-profil" element={<MonProfil utilisateur={utilisateur} />} />
           <Route path="/inscription" element={<Inscription onConnexion={seConnecter} />} />
           <Route path="/rendez-vous/:id" element={<RendezVous utilisateur={utilisateur} />} />
           <Route path="/mes-rendez-vous" element={<MesRendezVous utilisateur={utilisateur} />} />

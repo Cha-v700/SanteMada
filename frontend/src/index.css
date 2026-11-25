@@ -414,3 +414,50 @@ footer p {
     grid-template-columns: repeat(3, 1fr);
   }
 }
+
+
+
+/* Affichage du profil patient */
+.profil-details {
+    margin-top: 25px;
+}
+
+.profil-details p {
+    padding: 15px;
+    margin-bottom: 12px;
+    background-color: #f5f8fa;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    color: #334155;
+}
+
+.profil-details strong {
+    color: #0f172a;
+}
+
+/* PROFIL PATIENT */
+
+.profil-details {
+    margin-top: 20px;
+}
+
+.profil-details p {
+    padding: 15px;
+    margin-bottom: 12px;
+    background-color: #f5f8fa;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.profil-details button,
+.carte-formulaire form button {
+    margin-top: 15px;
+}
+
+.carte-formulaire select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}

@@ -1,55 +1,55 @@
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { lireComptes } from "../data/stockage.js";
+import { connecterAPI } from "../services/authService.js";
 import Message from "../components/Message.jsx";
 
 function Connexion({ onConnexion }) {
-  // L'ÉTAT : ce qui est tapé dans les champs et le message à afficher
   const [identifiant, setIdentifiant] = useState("");
   const [mdp, setMdp] = useState("");
   const [message, setMessage] = useState({ texte: "", type: "" });
+  const [chargement, setChargement] = useState(false);
 
   const navigate = useNavigate();
 
-  function envoyer(event) {
+  async function envoyer(event) {
     event.preventDefault();
 
-    const id = identifiant.trim().replaceAll(" ", "");
+    const email = identifiant.trim().toLowerCase();
 
-    // Contrôle 1 : champs vides
-    if (id === "" || mdp === "") {
-      setMessage({ texte: "Veuillez remplir tous les champs.", type: "erreur" });
+    if (email === "" || mdp === "") {
+      setMessage({
+        texte: "Veuillez remplir tous les champs.",
+        type: "erreur"
+      });
       return;
     }
 
-    // Contrôle 2 : longueur du mot de passe
-    if (mdp.length < 6) {
-      setMessage({ texte: "Le mot de passe doit contenir au moins 6 caractères.", type: "erreur" });
-      return;
-    }
+    setChargement(true);
+    setMessage({ texte: "", type: "" });
 
-    // Contrôle 3 : le compte existe-t-il ?
-    const compte = lireComptes().find(function (c) {
-      return c.identifiant === id && c.motDePasse === mdp;
-    });
+    try {
+      const data = await connecterAPI(email, mdp);
 
-    if (compte === undefined) {
-      setMessage({ texte: "Identifiant ou mot de passe incorrect.", type: "erreur" });
-      return;
-    }
+      onConnexion({
+        ...data.user,
+        token: data.token
+      });
 
-    // Tout est bon : on prévient App, puis on retourne à l'accueil
-    onConnexion({
-      nom: compte.nom,
-      role: compte.role,
-      identifiant: compte.identifiant,
-      medecinId: compte.medecinId
-    });
-    setMessage({ texte: "Connexion réussie ! Redirection...", type: "succes" });
+      setMessage({
+        texte: "Connexion réussie !",
+        type: "succes"
+      });
 
-    setTimeout(function () {
       navigate("/");
-    }, 1000);
+    } catch (error) {
+      setMessage({
+        texte: error.message,
+        type: "erreur"
+      });
+    } finally {
+      setChargement(false);
+    }
   }
 
   return (
@@ -57,11 +57,11 @@ function Connexion({ onConnexion }) {
       <h1>Connexion</h1>
       <p>Bienvenue ! Connectez-vous pour réserver.</p>
 
-      <label htmlFor="identifiant">Téléphone ou e-mail</label>
+      <label htmlFor="identifiant">E-mail</label>
       <input
-        type="text"
+        type="email"
         id="identifiant"
-        placeholder="034 00 000 00"
+        placeholder="exemple@email.com"
         value={identifiant}
         onChange={(e) => setIdentifiant(e.target.value)}
       />
@@ -74,7 +74,9 @@ function Connexion({ onConnexion }) {
         onChange={(e) => setMdp(e.target.value)}
       />
 
-      <button>Se connecter</button>
+      <button disabled={chargement}>
+        {chargement ? "Connexion..." : "Se connecter"}
+      </button>
 
       <Message texte={message.texte} type={message.type} />
 

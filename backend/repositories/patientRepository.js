@@ -7,7 +7,7 @@ export async function findByUserId(userId) {
         [userId]
     );
 
-    return rows[0];
+    return rows[0] || null;
 }
 
 // Créer un profil patient
