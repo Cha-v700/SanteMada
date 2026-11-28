@@ -1,61 +1,56 @@
-import express from "express";
-import * as controller from "../controllers/medecinController.js";
+
+import { Router } from "express";
 
 import {
-    createMedecinValidator,
-    idValidator,
-    searchMedecinValidator,
-    handleValidationErrors
-} from "../validators/medecinValidator.js";
+    getAll,
+    getById,
+    create,
+    update,
+    remove
+} from "../controllers/medecinController.js";
 
-const router = express.Router();
+import {
+    authenticateToken,
+    authorizeRoles
+} from "../middlewares/authMiddleware.js";
 
-// GET : tous les médecins avec filtres
+const router = Router();
+
+// Authentification obligatoire
+router.use(authenticateToken);
+
+// Lecture : admin et médecin
 router.get(
     "/",
-    searchMedecinValidator,
-    handleValidationErrors,
-    controller.getAll
+    authorizeRoles("admin", "medecin"),
+    getAll
 );
 
-// GET : médecin par ID
 router.get(
     "/:id",
-    idValidator,
-    handleValidationErrors,
-    controller.getById
+    authorizeRoles("admin", "medecin"),
+    getById
 );
 
-// POST : créer un médecin
+// Création : admin uniquement
 router.post(
     "/",
-    createMedecinValidator,
-    handleValidationErrors,
-    controller.create
+    authorizeRoles("admin"),
+    create
 );
 
-// PUT : modifier un médecin
+// Modification : admin uniquement
 router.put(
     "/:id",
-    idValidator,
-    handleValidationErrors,
-    controller.update
+    authorizeRoles("admin"),
+    update
 );
 
-// PATCH : modification partielle
-router.patch(
-    "/:id",
-    idValidator,
-    handleValidationErrors,
-    controller.patch
-);
-
-// DELETE : supprimer un médecin
+// Suppression : admin uniquement
 router.delete(
     "/:id",
-    idValidator,
-    handleValidationErrors,
-    controller.remove
+    authorizeRoles("admin"),
+    remove
 );
 
 export default router;

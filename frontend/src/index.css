@@ -1,23 +1,30 @@
 /* ==========================================================
-   index.css : le style de tout le site
-   Sections : 1 Base · 2 Barre du haut · 3 Page d'accueil · 4 Formulaires
-              5 Rendez-vous · 6 Listes de rendez-vous · 7 Pied de page · 8 Mobile
+   index.css : version SIMPLE (code de base)
+   Remplace src/index.css. Rien à changer dans le JSX.
+
+   Comment lire ce fichier :
+   - Un "bloc" = un sélecteur + des règles :   .carte { color: red; }
+   - .nom   = une classe (className="nom" dans le JSX)
+   - nom    = une balise HTML (header, button, p...)
+   - var(--vert) = on réutilise la couleur définie en haut
    ========================================================== */
 
 
-/* ---------- 1. BASE ---------- */
+/* ---------- 1. COULEURS (définies une seule fois) ---------- */
 :root {
-  --vert: #0f6e56;
-  --vert-fonce: #094f3e;
-  --vert-clair: #e1f5ee;
-  --texte: #1f2421;
-  --texte-doux: #5b635f;
-  --bordure: #dde3df;
-  --fond: #f4f7f6;
+  --vert: #0f6b52;        /* vert principal */
+  --vert-fonce: #0a5240;  /* vert foncé (survol) */
+  --vert-clair: #e3f4ec;  /* vert très clair (fonds) */
+  --texte: #1a2a24;
+  --texte-doux: #5d6b65;
+  --bordure: #dfe6e2;
+  --fond: #f4f6f5;
 }
 
+
+/* ---------- 2. BASE : s'applique à toute la page ---------- */
 * {
-  box-sizing: border-box;
+  box-sizing: border-box;   /* la largeur inclut le padding : plus simple */
 }
 
 body {
@@ -27,9 +34,10 @@ body {
   font-family: Arial, sans-serif;
 }
 
+/* Le contenu de chaque page : centré, largeur maximale */
 main {
-  max-width: 900px;
-  margin: 0 auto;
+  max-width: 1100px;
+  margin: 0 auto;           /* auto = centré */
   padding: 20px;
 }
 
@@ -45,22 +53,38 @@ a {
   color: var(--vert);
 }
 
+/* Champs et boutons : même apparence partout */
 input, select, button {
-  padding: 10px;
+  padding: 12px;
   font-size: 16px;
   border: 1px solid var(--bordure);
   border-radius: 8px;
   background-color: white;
 }
 
+/* Quand on clique dans un champ : contour vert */
 input:focus, select:focus {
   outline: none;
   border-color: var(--vert);
-  box-shadow: 0 0 0 3px rgba(15, 110, 86, 0.18);
 }
 
+/* Boutons : verts avec texte blanc */
 button {
   cursor: pointer;
+  background-color: var(--vert);
+  border-color: var(--vert);
+  color: white;
+}
+
+/* Quand la souris passe dessus : vert plus foncé */
+button:hover {
+  background-color: var(--vert-fonce);
+}
+
+/* Bouton désactivé (pendant un chargement par exemple) */
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .vide {
@@ -74,53 +98,58 @@ button {
 }
 
 
-/* ---------- 2. BARRE DU HAUT ---------- */
+/* ---------- 3. BARRE DU HAUT ---------- */
 header {
-  background-color: var(--vert);
-  padding: 20px;
-  display: flex;
+  background-color: white;
+  border-bottom: 1px solid var(--bordure);
+  padding: 15px 20px;
+  display: flex;                    /* met les éléments sur une ligne */
+  justify-content: space-between;   /* logo à gauche, menu à droite */
   align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 10px;
 }
 
 header a {
-  color: white;
-  text-decoration: none;
+  color: var(--texte-doux);
+  text-decoration: none;            /* enlève le soulignement */
 }
 
 .logo {
   font-size: 22px;
   font-weight: bold;
+  color: var(--vert);
 }
 
 nav {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 20px;                        /* espace entre les liens */
+}
+
+nav a:hover {
+  color: var(--vert);
 }
 
 .nom-utilisateur {
-  color: white;
   font-weight: bold;
+  color: var(--texte);
 }
 
-/* un bouton qui ressemble à un lien */
+/* Le bouton "Se déconnecter" ressemble à un lien */
 button.lien {
   background: none;
   border: none;
+  color: var(--vert);
   padding: 0;
-  color: white;
-  font-size: 16px;
   text-decoration: underline;
 }
 
 
-/* ---------- 3. PAGE D'ACCUEIL ---------- */
+/* ---------- 4. PAGE D'ACCUEIL ---------- */
+
+/* Le grand bandeau vert avec le titre */
 .bandeau {
   background-color: var(--vert);
-  padding: 30px;
+  padding: 40px 20px;
   border-radius: 16px;
   margin-bottom: 30px;
   text-align: center;
@@ -131,333 +160,312 @@ button.lien {
 }
 
 .bandeau p {
-  color: #cdeee2;
+  color: white;
 }
 
+/* La barre de recherche blanche */
 .recherche {
   background-color: white;
   padding: 12px;
   border-radius: 14px;
   display: flex;
-  gap: 8px;
+  gap: 10px;
 }
 
 .recherche input {
-  flex: 1;
+  flex: 1;                          /* le champ prend la place restante */
 }
 
+/* La liste des médecins : des cartes en colonnes */
 .liste {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(3, 1fr);   /* 3 colonnes égales */
+  gap: 20px;
 }
 
+/* Une carte de médecin */
 article {
   background-color: white;
   border: 1px solid var(--bordure);
-  border-radius: 12px;
-  padding: 16px;
-}
-
-article:hover {
-  border-color: var(--vert);
+  border-radius: 14px;
+  padding: 20px;
 }
 
 article h3 {
-  margin: 0 0 6px 0;
+  margin: 0 0 8px 0;
 }
 
-.bouton-lien {
+/* Le 1er paragraphe de la carte (la spécialité) : petite pastille verte */
+article p:first-of-type {
   display: inline-block;
   background-color: var(--vert-clair);
   color: var(--vert);
-  padding: 8px 14px;
-  border-radius: 8px;
-  text-decoration: none;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 13px;
+  margin: 0 0 10px 0;
 }
 
-
-/* ---------- 4. FORMULAIRES (connexion, inscription) ---------- */
-.carte-formulaire {
-  background-color: white;
-  max-width: 420px;
-  margin: 30px auto;
-  padding: 32px;
-  border: 1px solid var(--bordure);
-  border-radius: 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-}
-
-.carte-formulaire h1 {
-  margin: 0 0 6px 0;
-  font-size: 26px;
-}
-
-label {
+/* Le bouton "Prendre rendez-vous" */
+.bouton-lien {
   display: block;
-  margin: 18px 0 6px 0;
-  font-size: 14px;
-  font-weight: bold;
-  color: var(--texte-doux);
-}
-
-.carte-formulaire input {
-  width: 100%;
-}
-
-.aide {
-  margin: 6px 0 0 0;
-  font-size: 12px;
-}
-
-.carte-formulaire button,
-.confirmer {
-  width: 100%;
-  margin-top: 24px;
-  padding: 14px;
-  font-weight: bold;
   background-color: var(--vert);
-  border-color: var(--vert);
   color: white;
+  text-align: center;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 8px;
 }
 
-.carte-formulaire button:hover,
-.confirmer:hover {
+.bouton-lien:hover {
   background-color: var(--vert-fonce);
 }
 
-.message {
-  margin-top: 16px;
-  padding: 10px 12px;
-  border-radius: 8px;
+
+/* ---------- 5. FORMULAIRES (connexion, inscription, profil) ---------- */
+.carte-formulaire {
+  max-width: 450px;
+  margin: 30px auto;
+  background-color: white;
+  border: 1px solid var(--bordure);
+  border-radius: 16px;
+  padding: 30px;
+}
+
+.carte-formulaire h1 {
+  margin-top: 0;
+}
+
+label {
+  display: block;                   /* le label sur sa propre ligne */
+  margin: 15px 0 5px 0;
   font-size: 14px;
+  color: var(--texte-doux);
+}
+
+/* Les champs prennent toute la largeur de la carte */
+.carte-formulaire input,
+.carte-formulaire select {
+  width: 100%;
+}
+
+/* Le gros bouton du formulaire */
+.carte-formulaire button,
+.confirmer {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.aide {
+  font-size: 13px;
+  margin: 5px 0 0 0;
+}
+
+/* Messages d'erreur (rouge) et de réussite (vert) */
+.message {
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 15px;
 }
 
 .message.erreur {
-  background-color: #fcebeb;
-  color: #a32d2d;
+  background-color: #fbe9e9;
+  color: #a12626;
 }
 
 .message.succes {
-  background-color: #eaf3de;
-  color: #3b6d11;
-}
-
-.bas {
-  margin: 20px 0 0 0;
-  text-align: center;
-  font-size: 14px;
-}
-
-
-/* ---------- 5. PRISE DE RENDEZ-VOUS ---------- */
-.retour {
-  display: inline-block;
-  margin-bottom: 16px;
-  text-decoration: none;
-}
-
-.carte-rdv {
-  background-color: white;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 30px;
-  border: 1px solid var(--bordure);
-  border-radius: 16px;
-}
-
-.carte-rdv h1 {
-  margin-top: 0;
-  font-size: 26px;
-}
-
-.infos-medecin {
   background-color: var(--vert-clair);
-  padding: 14px 16px;
-  border-radius: 12px;
-  margin-bottom: 20px;
-}
-
-.infos-medecin h2 {
-  margin: 0 0 4px 0;
-  font-size: 18px;
   color: var(--vert-fonce);
 }
 
-.infos-medecin p {
-  margin: 0;
-  color: var(--vert);
+.bas {
+  text-align: center;
+  margin-top: 20px;
+}
+
+
+/* ---------- 6. PRENDRE RENDEZ-VOUS ---------- */
+.retour {
+  display: inline-block;
+  margin-bottom: 15px;
+}
+
+.carte-rdv {
+  max-width: 650px;
+  margin: 0 auto;
+  background-color: white;
+  border: 1px solid var(--bordure);
+  border-radius: 16px;
+  padding: 30px;
 }
 
 .carte-rdv input {
   width: 100%;
 }
 
-.titre-creneaux {
-  margin: 20px 0 8px 0;
-  font-size: 14px;
+/* Le cadre vert clair avec le nom du médecin */
+.infos-medecin {
+  background-color: var(--vert-clair);
+  border-left: 4px solid var(--vert);
+  padding: 12px 16px;
+  border-radius: 8px;
 }
 
+.infos-medecin h2 {
+  margin: 0;
+}
+
+.infos-medecin p {
+  margin: 5px 0 0 0;
+}
+
+.titre-creneaux {
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+/* Les créneaux horaires : 4 par ligne */
 .creneaux {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 8px;
 }
 
+/* Un créneau : bouton blanc avec contour */
 .creneau {
+  background-color: white;
+  color: var(--texte);
+  border: 1px solid var(--bordure);
   padding: 10px 0;
-  font-size: 14px;
 }
 
 .creneau:hover {
   background-color: var(--vert-clair);
 }
 
+/* Le créneau choisi : vert */
 .creneau.actif {
   background-color: var(--vert);
   color: white;
-  border-color: var(--vert);
 }
 
+/* Un créneau déjà pris : barré et grisé */
 .creneau:disabled {
-  background-color: #eceeed;
-  color: #aab0ad;
   text-decoration: line-through;
-  cursor: not-allowed;
+  background-color: var(--fond);
+  color: var(--texte-doux);
 }
 
 
-/* ---------- 6. LISTES DE RENDEZ-VOUS (patient et médecin) ---------- */
+/* ---------- 7. LISTE DES RENDEZ-VOUS + AGENDA ---------- */
 .ligne-rdv {
   display: flex;
   align-items: center;
   gap: 12px;
-  flex-wrap: wrap;
   background-color: white;
   border: 1px solid var(--bordure);
   border-radius: 12px;
-  padding: 14px 16px;
+  padding: 15px;
   margin-bottom: 10px;
 }
 
+/* La partie texte prend la place restante */
 .ligne-rdv > div {
   flex: 1;
-  min-width: 200px;
   display: flex;
-  flex-direction: column;
+  flex-direction: column;           /* les lignes l'une sous l'autre */
 }
 
+/* Les petits boutons "Annuler", "Confirmer"... */
+.ligne-rdv button {
+  padding: 8px 14px;
+  font-size: 14px;
+}
+
+/* Les badges de statut : une couleur par état */
 .badge {
-  font-size: 12px;
-  padding: 3px 10px;
-  border-radius: 10px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 13px;
 }
 
-.badge.en_attente { background-color: #faeeda; color: #854f0b; }
-.badge.confirme   { background-color: #eaf3de; color: #3b6d11; }
-.badge.annule     { background-color: #fcebeb; color: #a32d2d; }
-.badge.termine    { background-color: #eceeed; color: #555; }
+.badge.en_attente { background-color: #fdeccd; color: #854f0b; }
+.badge.confirme   { background-color: #e3f4e0; color: #1f6b00; }
+.badge.annule     { background-color: #fbe9e9; color: #a12626; }
+.badge.termine    { background-color: #eceeed; color: #555555; }
 
+/* Les 3 cartes de chiffres de l'agenda */
 .stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin: 16px 0;
+  gap: 15px;
+  margin: 20px 0;
 }
 
 .stat {
   background-color: white;
   border: 1px solid var(--bordure);
+  border-left: 4px solid var(--vert);
   border-radius: 12px;
-  padding: 12px 16px;
+  padding: 15px;
 }
 
 .stat span {
   display: block;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--texte-doux);
 }
 
 .stat strong {
-  font-size: 24px;
+  font-size: 28px;
+  color: var(--vert-fonce);
 }
 
 
-/* ---------- 7. PIED DE PAGE ---------- */
+/* ---------- 8. PROFIL PATIENT ---------- */
+.profil-details p {
+  background-color: var(--fond);
+  border: 1px solid var(--bordure);
+  border-radius: 8px;
+  padding: 12px;
+  color: var(--texte);
+}
+
+
+/* ---------- 9. PIED DE PAGE ---------- */
 footer {
   text-align: center;
   padding: 20px;
+  background-color: white;
+  border-top: 1px solid var(--bordure);
 }
 
 footer p {
-  color: var(--vert);
   margin: 0;
+  font-size: 14px;
 }
 
 
-/* ---------- 8. PETITS ÉCRANS (téléphone) ---------- */
+/* ---------- 10. TÉLÉPHONE (écran de moins de 700 px) ---------- */
+/* Tout ce qui est dans ce bloc ne s'applique que sur petit écran */
 @media (max-width: 700px) {
-  .liste {
-    grid-template-columns: 1fr;
-  }
-
   .recherche {
-    flex-direction: column;
+    flex-direction: column;         /* champs l'un sous l'autre */
   }
 
-  .carte-formulaire {
-    margin: 16px 0;
-    padding: 24px 20px;
+  .liste {
+    grid-template-columns: 1fr;     /* 1 seule colonne */
   }
 
   .creneaux {
     grid-template-columns: repeat(3, 1fr);
   }
-}
 
+  .stats {
+    grid-template-columns: 1fr;
+  }
 
-
-/* Affichage du profil patient */
-.profil-details {
-    margin-top: 25px;
-}
-
-.profil-details p {
-    padding: 15px;
-    margin-bottom: 12px;
-    background-color: #f5f8fa;
-    border-radius: 8px;
-    border: 1px solid #e2e8f0;
-    color: #334155;
-}
-
-.profil-details strong {
-    color: #0f172a;
-}
-
-/* PROFIL PATIENT */
-
-.profil-details {
-    margin-top: 20px;
-}
-
-.profil-details p {
-    padding: 15px;
-    margin-bottom: 12px;
-    background-color: #f5f8fa;
-    border-radius: 8px;
-    border: 1px solid #e2e8f0;
-}
-
-.profil-details button,
-.carte-formulaire form button {
-    margin-top: 15px;
-}
-
-.carte-formulaire select {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
+  .ligne-rdv {
+    flex-wrap: wrap;
+  }
 }

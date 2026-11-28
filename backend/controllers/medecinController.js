@@ -1,65 +1,73 @@
 import * as service from "../services/medecinService.js";
 
-// GET : récupérer tous les médecins
+// 1. Afficher la liste des médecins
 export async function getAll(req, res) {
     try {
-        const ville = req.query.ville;
-        const specialite = req.query.specialite;
-
-        const page = Math.max(1, parseInt(req.query.page) || 1);
-
-        const limit = Math.min(
-            50,
-            Math.max(1, parseInt(req.query.limit) || 10)
-        );
-
         const result = await service.getAllMedecins({
-            ville,
-            specialite,
-            page,
-            limit
+            ville: req.query.ville,
+            specialite: req.query.specialite,
+            statut: req.query.statut,
+            q: req.query.q,
+            page: req.query.page || 1,
+            limit: req.query.limit || 10
         });
 
-        res.status(200).json(result);
-
+        return res.status(200).json(result);
     } catch (error) {
-        res.status(500).json({
+        return res.status(400).json({
             message: error.message
         });
     }
 }
 
-// GET : récupérer un médecin par ID
+// 2. Afficher un médecin par ID
 export async function getById(req, res) {
     try {
         const medecin = await service.getMedecinById(req.params.id);
 
-        res.status(200).json(medecin);
-    } catch (error) {
-        const status = error.message === "Médecin introuvable"
-            ? 404
-            : 500;
+        if (!medecin) {
+            return res.status(404).json({
+                message: "Médecin introuvable"
+            });
+        }
 
-        res.status(status).json({
+        return res.status(200).json(medecin);
+    } catch (error) {
+        return res.status(400).json({
             message: error.message
         });
     }
 }
 
-// POST : créer un médecin
+// 3. Ajouter un médecin
 export async function create(req, res) {
     try {
         const medecin = await service.createMedecin(req.body);
 
-        res.status(201).json(medecin);
+        return res.status(201).json({
+            message: "Médecin créé avec succès",
+            medecin
+        });
     } catch (error) {
-        res.status(400).json({
+        if (error.code === "ER_DUP_ENTRY") {
+            return res.status(409).json({
+                message: "Cette information existe déjà"
+            });
+        }
+
+        if (error.code === "ER_NO_REFERENCED_ROW_2") {
+            return res.status(400).json({
+                message: "Établissement invalide"
+            });
+        }
+
+        return res.status(400).json({
             message: error.message
         });
     }
 }
 
-// PUT : modifier un médecin
+// 4. Modifier un médecin
 export async function update(req, res) {
     try {
         const medecin = await service.updateMedecin(
@@ -67,37 +75,45 @@ export async function update(req, res) {
             req.body
         );
 
-        res.status(200).json(medecin);
+        return res.status(200).json({
+            message: "Médecin modifié avec succès",
+            medecin
+        });
     } catch (error) {
-        const status = error.message === "Médecin introuvable"
-            ? 404
-            : 400;
+        if (error.code === "ER_DUP_ENTRY") {
+            return res.status(409).json({
+                message: "Cette information existe déjà"
+            });
+        }
 
-        res.status(status).json({
+        if (error.code === "ER_NO_REFERENCED_ROW_2") {
+            return res.status(400).json({
+                message: "Établissement invalide"
+            });
+        }
+
+        return res.status(400).json({
             message: error.message
         });
     }
 }
 
-// PATCH : modification partielle
-export async function patch(req, res) {
-    return update(req, res);
-}
-
-// DELETE : supprimer un médecin
+// 5. Supprimer un médecin
 export async function remove(req, res) {
     try {
-        await service.deleteMedecin(req.params.id);
+        const deleted = await service.deleteMedecin(req.params.id);
 
-        res.status(200).json({
+        if (!deleted) {
+            return res.status(404).json({
+                message: "Médecin introuvable"
+            });
+        }
+
+        return res.status(200).json({
             message: "Médecin supprimé avec succès"
         });
     } catch (error) {
-        const status = error.message === "Médecin introuvable"
-            ? 404
-            : 500;
-
-        res.status(status).json({
+        return res.status(400).json({
             message: error.message
         });
     }

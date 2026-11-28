@@ -1,43 +1,49 @@
+
 import jwt from "jsonwebtoken";
 
-// Middleware d'authentification JWT
+// 1. Vérifier le token
 export function authenticateToken(req, res, next) {
+    const authHeader = req.headers.authorization;
 
-    // 1. Récupérer le header Authorization
-    const authorization = req.headers.authorization;
-
-    // 2. Vérifier si le header existe
-    if (!authorization) {
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
         return res.status(401).json({
-            message: "Token manquant"
+            message: "Authentification requise"
         });
     }
 
-    // 3. Vérifier le format Bearer Token
-    const [scheme, token] = authorization.split(" ");
+    const token = authHeader.split(" ")[1];
 
-    if (scheme !== "Bearer" || !token) {
-        return res.status(401).json({
-            message: "Format du token incorrect"
-        });
-    }
-
-    // 4. Vérifier le token JWT
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(
+            token,
+            process.env.JWT_SECRET
+        );
 
-        // 5. Récupérer les informations de l'utilisateur
-        req.user = {
-            id: decoded.sub,
-            role: decoded.role
-        };
+        req.user = decoded;
 
-        // 6. Continuer vers la route suivante
         next();
-
-    } catch (error) {
+    } catch {
         return res.status(401).json({
             message: "Token invalide ou expiré"
         });
     }
+}
+
+// 2. Autoriser certains rôles
+export function authorizeRoles(...roles) {
+    return (req, res, next) => {
+        if (!req.user) {
+            return res.status(401).json({
+                message: "Authentification requise"
+            });
+        }
+
+        if (!roles.includes(req.user.role)) {
+            return res.status(403).json({
+                message: "Vous n'avez pas la permission d'effectuer cette action"
+            });
+        }
+
+        next();
+    };
 }
